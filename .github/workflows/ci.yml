@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Show Files
         run: ls -la
@@ -20,8 +20,21 @@ jobs:
         run: echo "Build successful!"
 
       - name: Upload Artifact
-  uses: actions/upload-artifact@v4
-  with:
-    name: website-files
-    path: .
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-files
+          path: .
 
+      - name: Notify Slack on Success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"✅ CI Build Successful for devops-webapp!"}' \
+          ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Notify Slack on Failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"❌ CI Build Failed for devops-webapp!"}' \
+          ${{ secrets.SLACK_WEBHOOK }}
