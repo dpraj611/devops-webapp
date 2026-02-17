@@ -24,3 +24,11 @@ jobs:
         with:
           name: website-files
           path: .
+      - name: Notify Slack
+        if: always()
+        continue-on-error: true
+        run: |
+          STATUS="${{ job.status }}"
+          curl -X POST -H "Content-Type: application/json" \
+          -d "{\"text\":\"🚀 DevOps Pipeline Status: $STATUS\"}" \
+          ${{ secrets.SLACK_WEBHOOK }}
