@@ -1,0 +1,26 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Show Files
+        run: ls -la
+
+      - name: Simulate Build
+        run: echo "Build successful!"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: website-files
+          path: .
