@@ -24,17 +24,3 @@ jobs:
         with:
           name: website-files
           path: .
-
-      - name: Notify Slack on Success
-        if: success()
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"✅ CI Build Successful for devops-webapp!"}' \
-          ${{ secrets.SLACK_WEBHOOK }}
-
-      - name: Notify Slack on Failure
-        if: failure()
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"❌ CI Build Failed for devops-webapp!"}' \
-          ${{ secrets.SLACK_WEBHOOK }}
